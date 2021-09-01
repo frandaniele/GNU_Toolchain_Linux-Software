@@ -1,46 +1,52 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <getopt.h>
 
 int main(int argc, char **argv)
 {
-    if(argc != 2){
+    int next_option;
+    int s = 0;
+    int a = 0;
+    
+    const char* const short_options = "sa"; 
+
+    const struct option long_options[] = {
+    { "ejuno", 0, NULL, 's' },
+    { "ejdos", 0, NULL, 'a' },
+    { NULL, 0, NULL, 0 } 
+    };
+
+    next_option = getopt_long(argc, argv, short_options, long_options, NULL);
+    switch (next_option)
+    {
+    case 's': 
+        s = 1;
+        break;
+    case 'a': 
+        a = 1;
+        break;
+    case '?': 
+        return 1;
+    case -1: 
         printf("Usage: ./main -s or ./main -a.\n");
         return 1;
-    }
-
-    if(strlen(argv[1]) != 2){
-        printf("Flag's format: '-x'.\n");
+    default: 
+        printf("Unexpected error.\n");
         return 1;
     }
     
-    char flags[2] = {'a', 's'};
-    char flag = argv[1][1];
-
-    int i;
-    for(i = 0; i < 2; i++) 
+    if(s)
     {
-        if(flag == flags[i]) 
-        {
-            i = 5;
-            break;
-        }
+        system("./labs/cpuinfo");
+        system("./labs/meminfo");
+        printf("Se ejecuto el ejercicio 1 del laboratorio 2 por haberse ejecutado el programa con opcion -s\n");
     }
-
-    if(i != 5)
+    else if(a)
     {
-        printf("%c: not a valid flag.\n", flag);
-        return 1;
-    }
-
-    if(flag == 'a')
-    {
-        printf("Estoy haciendo cualquiera.\n");
-        //system("cd ../");
-    }
-    else if(flag == 's')
-    {
-        printf("Me trabe.\n");
+        system("./labs/arreglos 0");
+        system("./labs/arreglos 1");
+        printf("Se ejecuto el ejercicio 1 del laboratorio 2 por haberse ejecutado el programa con opcion -a\n");
     }
     else
     {

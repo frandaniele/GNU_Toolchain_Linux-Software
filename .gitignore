@@ -1,4 +1,6 @@
 .vscode
 *.o
 main
-labs
+meminfo
+cpuinfo
+arreglos
