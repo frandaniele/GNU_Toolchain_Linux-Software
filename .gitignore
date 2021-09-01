@@ -1,5 +1,5 @@
-.vscode
 *.o
+*.a
 main
 meminfo
 cpuinfo
