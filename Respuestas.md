@@ -5,19 +5,19 @@
 ## Actividades
 #### 1. Command line arguments
 
-    1.1  Resuelto en main.c
+    1.1  Resuelto en main.c.
     
-    1.2  Ídem anterior
+    1.2  Ídem anterior.
 
 #### 2. Static Library
 
-    2.1 Resuelto en main.c
+    2.1 Resuelto en main.c y Makefile para la creación del archivo .a para la librería estática.
 
 #### 3. Dynamic Library
 
-    3.1 Resuelto en
+    3.1 Resuelto en infofs.c.
 
-    3.2 Resuelto en
+    3.2 Ídem anterior.
 
 #### 4. Cuestionario
 

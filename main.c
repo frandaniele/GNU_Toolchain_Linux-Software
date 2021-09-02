@@ -9,13 +9,15 @@ int main(int argc, char **argv)
     int s = 0;
     int a = 0;
     int j = 0;
+    int d = 0;
     
-    const char* const short_options = "saj"; 
+    const char* const short_options = "sajd"; 
 
     const struct option long_options[] = {
     { "shell", 0, NULL, 's' },
     { "arrays", 0, NULL, 'a' },
     { "json", 0, NULL, 'j' },
+    { "dll", 0, NULL, 'd' },
     { NULL, 0, NULL, 0 } 
     };
 
@@ -33,6 +35,9 @@ int main(int argc, char **argv)
         case 'j': 
             j = 1;
             break;
+        case 'd': 
+            d = 1;
+            break;
         case '?': 
             return 1;
         case -1: 
@@ -43,6 +48,19 @@ int main(int argc, char **argv)
         }
     }while (next_option != -1); 
     
+    if(!a && !s && !d)
+    {
+        if(j)
+        {
+            printf("Option -j must be used with -s or -a.\n");
+        }
+        else
+        {
+            printf("main: usage: ./main [-sj] [-aj] [-d].\n");
+        }
+        return 1;
+    }
+
     if(s)
     {
         if(j)
@@ -56,7 +74,8 @@ int main(int argc, char **argv)
         }
         printf("Se ejecuto el ejercicio 1 del lab2 por haberse ejecutado ./main -s\n");
     }
-    else if(a)
+    
+    if(a)
     {
         if(j)
         {
@@ -69,10 +88,10 @@ int main(int argc, char **argv)
         }
         printf("Se ejecuto el ejercicio 2 del lab2 por haberse ejecutado ./main -a\n");
     }
-    else
+    
+    if(d)
     {
-        printf("main: usage: ./main [-sj] [-aj].\n");
-        return 1;
+        printf("Option -d.\n");
     }
 
     printf("\n");
