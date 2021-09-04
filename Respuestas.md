@@ -21,13 +21,13 @@
 
 #### 4. Cuestionario
 
-    4.1 En /proc/<id>/fd tendremos una entrada para cada archivo que abrió el proceso con el nombre de su file descriptor que es un número que provee el kernel y es un link simbólico al archivo. Los tipos que podemos encontrar son:
+    4.1 En /proc/<id>/fd tendremos una entrada para cada archivo que abrió el proceso con el nombre de su file descriptor que es un número que provee el kernel y es un link simbólico al archivo. En el caso de sockets y pipes su entrada será un link simbólico junto con su inodo, y en caso de archivos sin inodos la entrada será de la forma anon_inode:<file-type>
+    Los tipos que podemos encontrar son:
         -stdin (0)
         -stdout (1)
         -stderror (2)
         -pipes
         -sockets
-        -inodos
         -FIFOs
         -Conexiones con periféricos (drivers)
 
