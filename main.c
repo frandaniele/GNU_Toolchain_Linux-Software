@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <getopt.h>
+#include <dlfcn.h>
 #include "cJSON.h"
 #include "labs/read_text_file.h"
 
@@ -206,6 +207,29 @@ int main(int argc, char **argv)
 
     if(d)
     {
+        void *handle;
+        int (*fptr)();
+        
+        handle = dlopen("libinfofs.so", RTLD_LAZY);
+        if (!handle) {
+            fprintf(stderr, "%s\n", dlerror());
+            exit(EXIT_FAILURE);
+        }
+        dlerror(); 
+
+        *(void**)(&fptr) = dlsym(handle, "read");
+        (*fptr)();
+
+        char *error = dlerror();
+        if (error != NULL) {
+            fprintf(stderr, "%s\n", error);
+            exit(EXIT_FAILURE);
+        }
+        //printf("%f\n", (*cosine)(2.0));
+        dlclose(handle);
+        exit(EXIT_SUCCESS);
+
+
         printf("Option -d.\n");
     }
 
