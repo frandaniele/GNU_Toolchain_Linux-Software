@@ -48,7 +48,7 @@ int read_filesystems(char *txt)
     }while(ptr != NULL);
 
     out = cJSON_Print(root);
-    printf("%s", out);
+    printf("%s\n", out);
     cJSON_Delete(root);
     free(out);
 

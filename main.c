@@ -42,7 +42,7 @@ int main(int argc, char **argv)
             d = 1;
             break;
         case '?': 
-            return 1;
+            break;
         case -1: 
             break;
         default: 
@@ -129,7 +129,6 @@ int main(int argc, char **argv)
             disp = strtok(disp, " ");
             disp = strtok(NULL, " ");
             
-
             cJSON *root, *cpu, *ram;
             char *out;
             root = cJSON_CreateObject();

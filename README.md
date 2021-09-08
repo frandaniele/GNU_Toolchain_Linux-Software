@@ -1,59 +1,40 @@
-Laboratorio N3
-# GNU Toolchain y Linux Software
+# Laboratorio 2 - Francisco Daniele
+## GNU Toolchain y Linux Software
 ### SOI - FCEFyN - UNC - 2021
-
-
-## Objetivo
-Sentar las bases del diseño e implementación de librerías estáticas y dinámicas.
-
-
-## Duración
-COn el material dado en clase, este laboratorio está diseñado para resolverse entre 8 y 10 horas.
-
 
 ## Actividades
 #### 1. Command line arguments
 
-
-Se debe diseñar e implementar un programa en lengiaje C que al ejecutarse reciba por argumentos:
-
-  1. Si se ejecuta con la opción _-s_ debe ejecutar el ejercicio 1 del Laboratorio 2.
-
-  1. Si se ejecuta con la opción _-a_ debe ejecutar el ejercicio 2 del Laboratorio 2.
-
-
+    1.1  Resuelto en main.c.
+    Utilicé los archivos fuente del laboratorio anterior, guardados en la carpeta /labs, la función getopt_long para seleccionar las opciones que se pasen como argumento correctamente, y la función system para hacer llamadas al sistema, así ejecutar los laboratorios anteriores y obtener sus datos.
+    
+    1.2  Ídem anterior.
 
 #### 2. Static Library
 
-Implementar en el proyecto la librería cJSON, que permita:
+    2.1 Resuelto en main.c y Makefile para la creación del archivo .a para la librería estática.
+    Para esta actividad me serví de strtok y read (funcion creada por mi en read_text_file.c) para obtener los datos y formatearlos para luego con la librería estatica libjson.a (creada mediante ´ar cr´) mostrarlos como pedía la consigna.
 
-  2.1. Si se agrega, junto a las opciones del **punto 1**, la opción _-j_, se debe utilizar la librería estática **cJSON** [1] y mostrar el resultado en dicho formato.
-  
 #### 3. Dynamic Library
 
-Se debe diseñar e implementar una librería dinámica que actúe como _plugin_, extendiendo las opciones y que permita lo siguiente:
+    3.1 Resuelto en infofs.c.
+    Para este punto usé las funciones de dlfcn.h, linkeada al programa con el flag -ldl, para cargar y utilizar dinámicamente la librería libinfofs.so creada a partir de infofs.c y cJSON.c en el Makefile. 
 
-  3.1. Se debe cargar dinámicamente al ejecutarse con la opción -d
-  
-  3.2. Debe mostrar, utilizando la librería cJSON del punto 2, la información sobre los filesystems soportado por el kernel en uso: /proc/filesystems.
-  
+    3.2 Ídem anterior.
+
 #### 4. Cuestionario
 
-  4.1. ¿Cuáles son los tipos de _type descriptors_ que podemos encontrar en _/proc/<id>/fd_?
-  
-  4.2. Suponiendo que un usuario está ejecutando el proceso _pid 1212_, ¿Es válida la ejecución del siguiente comando desde una terminal nueva?
-_% echo “Hello, world.” >> /proc/1212/fd/1_
-  
-  4.3. Qué diferencia hay entre _hard_ y _soft limits_?
+    4.1 En /proc/<id>/fd tendremos una entrada para cada archivo que abrió el proceso con el nombre de su file descriptor que es un número que provee el kernel y es un link simbólico al archivo. En el caso de sockets y pipes su entrada será un link simbólico junto con su inodo, y en caso de archivos sin inodos la entrada será de la forma anon_inode:<file-type>
+    Los tipos que podemos encontrar son:
+        -stdin (0)
+        -stdout (1)
+        -stderror (2)
+        -pipes
+        -sockets
+        -FIFOs
+        -Conexiones con periféricos (drivers)
 
+    4.2 La ejecución de dicho comando es válida, lo que hara es poner en su file descriptor stdout el mensaje “Hello, world.” y si no hay conflicto de permisos con el proceso se mostrará.    
 
-
-## ¿Qué entregar?
-- Se debe trabajar en GitHub Classroom. Es necesario subir los archivos de código en C y generar y subir un archivo markdown (.md) para las respuestas.
-- Se debe compilar utilizando *gcc -Wall -Werror -Pedantic*.
-- Se debe proveer un Makefile para el construir el proyecto. Ademas, se debe proveer de un target clean para eliminar archivos generados.
-- Aclaración: No subir binarios ni archivos de proyectos (eg: Eclipse). Solo archivos .h y .c.
-- Se recomienda ir haciendo git push incrementales al repositorio a medida que se desarrolla el trabajo.
-
-## Referencias
-[1] cJSON, https://github.com/DaveGamble/cJSON
+    4.3 Para cada recurso tenemos dos tipos de límites: hard y soft. Nos sirven para restringir el uso de recursos por parte de los procesos.
+    Las diferencias son que el hard limit solo puede ser cambiado por root y el soft limit puede ser cambiado por el proceso en cualquier momento. El hard define el limite fisico que el usuario puede alcanzar, y el soft nunca puede pasarlo.
