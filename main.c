@@ -208,29 +208,29 @@ int main(int argc, char **argv)
     if(d)
     {
         void *handle;
-        int (*fptr)();
+        int (*fptr)(char*);
+        char fs_txt[800];
+
+        read("/proc/filesystems", 800, fs_txt);
         
-        handle = dlopen("libinfofs.so", RTLD_LAZY);
+        handle = dlopen("./libinfofs.so", RTLD_LAZY);
         if (!handle) {
             fprintf(stderr, "%s\n", dlerror());
             exit(EXIT_FAILURE);
         }
         dlerror(); 
 
-        *(void**)(&fptr) = dlsym(handle, "read");
-        (*fptr)();
+        *(void**)(&fptr) = dlsym(handle, "read_filesystems");
+        (*fptr)(fs_txt);
 
         char *error = dlerror();
         if (error != NULL) {
             fprintf(stderr, "%s\n", error);
             exit(EXIT_FAILURE);
         }
-        //printf("%f\n", (*cosine)(2.0));
         dlclose(handle);
-        exit(EXIT_SUCCESS);
 
-
-        printf("Option -d.\n");
+        printf("Opcion -d. Vimos los filesystems soportados y si estan montados en algun dispositivo o no.\n");
     }
 
     printf("\n");

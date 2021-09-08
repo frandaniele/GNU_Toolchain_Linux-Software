@@ -6,7 +6,6 @@ all:	main
 main: main.o libjson.a
 		$(MAKE) libjson.a	libinfofs.so
 		gcc $(CFLAGS) $(OFLAGS) -o main main.o -L. -ljson -ldl
-		export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
 		$(MAKE) -C labs 
 		$(RM) *.o *.a
 
@@ -28,5 +27,5 @@ infofs.o: infofs.c infofs.h
 		gcc $(CFLAGS) $(OFLAGS) -fPIC -c infofs.c
 
 clean:
-		$(RM) *.o *.a *.so main
+		$(RM) *.so main
 		$(MAKE) -C labs clean

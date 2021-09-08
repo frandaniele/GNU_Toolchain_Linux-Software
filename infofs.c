@@ -1,9 +1,7 @@
 #include "infofs.h"
-#include <stdio.h>
 
-int read_filesystems()
+int read_filesystems(char *txt)
 {
-    char fs_txt[800];
     char *ptr = NULL;
     cJSON *root, *mounted, *unmounted;
     char *out;
@@ -15,21 +13,18 @@ int read_filesystems()
     cJSON_AddItemToObject(root, "Mounted fs", mounted = cJSON_CreateObject());
     cJSON_AddItemToObject(root, "Unmounted fs", unmounted = cJSON_CreateObject());
 
-    system("cat /proc/filesystems > aux.txt");
-    read("aux.txt", 800, fs_txt);
-
-    ptr = strtok(fs_txt, "\n");
+    ptr = strtok(txt, "\n");
     if(strstr(ptr, "nodev"))
     {
         i++;
         sprintf(index, "%i", i);
-        cJSON_AddStringToObject(unmounted, index, ptr);
+        cJSON_AddStringToObject(unmounted, index, ptr+6);
     }
     else
     {
         j++;
         sprintf(index, "%i", j);
-        cJSON_AddStringToObject(mounted, index, ptr);
+        cJSON_AddStringToObject(mounted, index, ptr+1);
     }
 
     do
@@ -41,13 +36,13 @@ int read_filesystems()
             {
                 i++;
                 sprintf(index, "%i", i);
-                cJSON_AddStringToObject(unmounted, index, ptr);
+                cJSON_AddStringToObject(unmounted, index, ptr+6);
             }
             else
             {
                 j++;
                 sprintf(index, "%i", j);
-                cJSON_AddStringToObject(mounted, index, ptr);
+                cJSON_AddStringToObject(mounted, index, ptr+1);
             }
         }
     }while(ptr != NULL);
