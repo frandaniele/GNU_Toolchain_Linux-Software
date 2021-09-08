@@ -1,12 +1,14 @@
 OFLAGS = -Wall -Werror -pedantic
+RM = rm -f
 
 all:	main
 
 main: main.o libjson.a
 		$(MAKE) libjson.a	libinfofs.so
 		gcc $(CFLAGS) $(OFLAGS) -o main main.o -L. -ljson -ldl
+		export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
 		$(MAKE) -C labs 
-		rm -f *.o *.a
+		$(RM) *.o *.a
 
 main.o: main.c
 		gcc $(CFLAGS) $(OFLAGS) -c main.c
@@ -20,11 +22,11 @@ cJSON.o: cJSON.c cJSON.h
 
 libinfofs.so:	infofs.o cJSON.o
 		$(MAKE) cJSON.o
-		gcc -shared -fPIC -o libinfofs.so infofs.o cJSON.o 
+		gcc -shared -o libinfofs.so infofs.o cJSON.o 
 
-infofs.o: infofs.c
+infofs.o: infofs.c infofs.h
 		gcc $(CFLAGS) $(OFLAGS) -fPIC -c infofs.c
 
 clean:
-		rm -f *.o *.a *.so main
+		$(RM) *.o *.a *.so main
 		$(MAKE) -C labs clean
