@@ -28,12 +28,13 @@ Para este punto usé las funciones de _dlfcn.h_, linkeada al programa con el fla
 -    stdin (0)
 -    stdout (1)
 -    stderror (2)
+-    archivos
 -    pipes
 -    sockets
 -    FIFOs
 -    Conexiones con periféricos (drivers)
 
-4.2 La ejecución de dicho comando es válida, lo que hara es poner en su file descriptor stdout el mensaje “Hello, world.” y si no hay conflicto de permisos con el proceso se mostrará.    
+4.2 La ejecución de dicho comando es válida, lo que hara es anexar en su file descriptor stdout el mensaje “Hello, world.” y si no hay conflicto de permisos con el proceso se mostrará.    
 
 4.3 Para cada recurso tenemos dos tipos de límites: hard y soft. 
 Nos sirven para restringir el uso de recursos por parte de los procesos.
