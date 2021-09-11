@@ -1,10 +1,12 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <getopt.h>
 #include <dlfcn.h>
 #include "cJSON.h"
 #include "labs/read_text_file.h"
+
+void imprimirJSON(cJSON *obj);
+char* busca_palabras(char* str, char* separator, int n);
 
 int main(int argc, char **argv)
 {
@@ -85,11 +87,7 @@ int main(int argc, char **argv)
             ptr = strtok(NULL, "\n");
             char *threads_core = ptr;
 
-            ptr = strtok(marca, " ");
-            for(int i=0; i<5; i++) 
-            {
-                ptr = strtok(NULL, " ");
-            }
+            ptr = busca_palabras(marca, " ", 5);
             marca = ptr;
             ptr = strtok(NULL, " ");
             char *modelo = ptr;
@@ -100,37 +98,24 @@ int main(int argc, char **argv)
             ptr = strtok(NULL, " ");
             char *frec = ptr;
 
-            ptr = strtok(cores_cpu, " ");
-            for(int i=0; i<7; i++) 
-            {
-                ptr = strtok(NULL, " ");
-            }
+            ptr = busca_palabras(cores_cpu, " ", 7);
             int c_cpu = atoi(ptr);
 
-            ptr = strtok(threads_core, " ");
-            for(int i=0; i<7; i++) 
-            {
-                ptr = strtok(NULL, " ");
-            }
+            ptr = busca_palabras(threads_core, " ", 7);
             int t_core = atoi(ptr);
 
-            ptr = strtok(mem_txt, "\n");
-            ptr = strtok(NULL, "\n");
+            ptr = busca_palabras(mem_txt, "\n", 1);
             char *total = ptr;
             ptr = strtok(NULL, "\n");
             char *libre = ptr;
             ptr = strtok(NULL, "\n");
             char *disp = ptr;
 
-            total = strtok(total, " ");
-            total = strtok(NULL, " ");
-            libre = strtok(libre, " ");
-            libre = strtok(NULL, " ");
-            disp = strtok(disp, " ");
-            disp = strtok(NULL, " ");
+            total = busca_palabras(total, " ", 1);
+            libre = busca_palabras(libre, " ", 1);
+            disp = busca_palabras(disp, " ", 1);
             
             cJSON *root, *cpu, *ram;
-            char *out;
             root = cJSON_CreateObject();
             cJSON_AddItemToObject(root, "CPU", cpu = cJSON_CreateObject());
             cJSON_AddStringToObject(cpu, "Fabricante", marca);
@@ -142,12 +127,9 @@ int main(int argc, char **argv)
             cJSON_AddNumberToObject(ram, "Total", atoi(total));
             cJSON_AddNumberToObject(ram, "Libre", atoi(libre));
             cJSON_AddNumberToObject(ram, "Disponible", atoi(disp));
-            out = cJSON_Print(root);
-            printf("%s\n", out);
+            
+            imprimirJSON(root);
             cJSON_Delete(root);
-            free(out);
-
-            printf("Los resultados se mostraron en formato json por opcion -j\n");
         }
         else
         {
@@ -167,16 +149,13 @@ int main(int argc, char **argv)
             system("rm aux.txt");
 
             cJSON *root, *palabras;
-            char *out;
             root = cJSON_CreateObject();
             cJSON_AddItemToObject(root, "palabras", palabras = cJSON_CreateObject());
 
             int i = 0;
             char index[3];
 
-            char *ptr = NULL;
-            ptr = strtok(arr_txt, "\n");
-            ptr = strtok(NULL, "\n");
+            char *ptr = busca_palabras(arr_txt, "\n", 1);
 
             ptr = strtok(ptr, " ");
             do
@@ -190,12 +169,8 @@ int main(int argc, char **argv)
                 } 
             }while(ptr != NULL);
 
-            out = cJSON_Print(root);
-            printf("\n%s\n", out);
+            imprimirJSON(root);
             cJSON_Delete(root);
-            free(out);
-
-            printf("Los resultados se mostraron en formato json por opcion -j\n");
         }
         else
         {
@@ -231,8 +206,27 @@ int main(int argc, char **argv)
 
         printf("Opcion -d. Vimos los filesystems soportados y si estan montados en algun dispositivo o no.\n");
     }
-
     printf("\n");
 
     return 0;
+}
+
+void imprimirJSON(cJSON *obj)
+{
+    char *out;
+    out = cJSON_Print(obj);
+    printf("\n%s\n", out);
+    free(out);
+
+    printf("Los resultados se mostraron en formato json por opcion -j\n");
+}
+
+char* busca_palabras(char* str, char* separator, int n)
+{
+    char *ptr = strtok(str, separator);
+    for(int i=0; i<n; i++) 
+    {
+        ptr = strtok(NULL, separator);
+    }
+    return ptr;
 }
